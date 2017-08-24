@@ -1,0 +1,26 @@
+<div><span>{{ message }}</span></div>
+
+<form #f="ngForm" (ngSubmit)="searchCarrier(f.value, f.valid)" novalidate>
+    <label for="search_string">Enter MC# or Dot#</label>
+    <input type="text" id="search_string" id="search_string" name="search_string" [(ngModel)]="search_string" pattern="[0-9]+"
+        required #search="ngModel">
+    <div *ngIf="search.invalid && (search.dirty || search.touched)" class="alert alert-danger">
+        <span [hidden]="!f.form.hasError('required', 'search_string')">Please enter a Dot or Mc number.</span>
+        <span [hidden]="!f.form.hasError('pattern', 'search_string' )">Please enter only numbers.</span>
+    </div>
+    <button type="submit" [disabled]=!f.form.valid class="btn-info btn-md">Find a Carrier</button>
+
+</form>
+
+{{carriers | json}}
+
+<div *ngIf="carrierList">
+    <ul>
+        <li *ngFor="let carrier of carriers">
+            <button (click)="addCarrier(carrier.carrier_id)">Add{{carrier.carrier_id}}</button> {{carrier.carrier_id}} -
+            {{carrier.mc_number}} - {{ carrier.legal_name }} - {{carrier.city_street}}, {{carrier.state_street}}
+        </li>
+    </ul>
+</div>
+
+<p>Output: {{postData}}</p>

@@ -1,0 +1,32 @@
+{{ message }}
+
+<!-- search customerr-->
+<form #f="ngForm" (ngSubmit)="searchShipper(f.value, f.valid)" novalidate>
+
+    <label for="search_string">Enter Customer</label>
+    <input type="text" id="search_string" id="search_string" name="search_string" [(ngModel)]="search_string" required #search="ngModel">
+
+
+    <div *ngIf="search.invalid && (search.dirty || search.touched)" class="alert alert-danger">
+        <span [hidden]="!f.form.hasError('required', 'search_string')">Please enter a shipper.</span>
+
+    </div>
+    <button type="submit" [disabled]=!f.form.valid class="btn-info btn-md">Find a Customer</button>
+
+</form>
+
+{{shippers | json}}
+<!--list found custoemrs and add button to add customerto database-->
+<div *ngIf="listShippers">
+    <form>
+        <label for="checkFlag">Check to add a shipper as an extra pick up</label>
+        <input disabled type="checkbox" id="checkFlag" name="checkFlag" [(ngModel)]="checkFlag" />
+    </form>
+
+    <ul>
+        <li *ngFor="let shipper of shippers">
+            <button (click)="addCustomer(shipper.shipper_id,checkFlag)">Add{{shipper.shipper_id}}</button> {{shipper.shipper_id}}
+            - {{shipper.legal_name }}
+        </li>
+    </ul>
+</div>
